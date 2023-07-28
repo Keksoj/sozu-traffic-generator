@@ -1,0 +1,14 @@
+# Socket address on which to expose the metrics server
+listening-address = "0.0.0.0:3000"
+
+[sozu]
+# Listener on which it will load certificates
+listener = "0.0.0.0:443"
+# Path to Sōzu's configuration file
+configuration = "path/to/sozu/config.toml"
+
+[sentry]
+# The Data Source Name of our API
+dsn = "https://..."
+# See https://docs.rs/sentry/0.31.3/sentry/struct.ClientOptions.html#structfield.environment
+environment = "production"
