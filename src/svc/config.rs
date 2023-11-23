@@ -1,7 +1,4 @@
 //! # Configuration module
-//!
-//! This module provides structures and helpers to interact with the configuration
-
 use std::{
     env::{self, VarError},
     net::SocketAddr,
@@ -10,9 +7,6 @@ use std::{
 
 use config::{Config, ConfigError, File};
 use serde::{Deserialize, Serialize};
-
-// -----------------------------------------------------------------------------
-// Error
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -23,9 +17,6 @@ pub enum Error {
     #[error("failed to retrieve environment variable '{0}', {1}")]
     EnvironmentVariable(&'static str, VarError),
 }
-
-// -----------------------------------------------------------------------------
-// Sōzu
 
 /// Sōzu-related configuration
 #[derive(Serialize, Deserialize, PartialEq, Eq, Clone, Debug)]
@@ -38,9 +29,6 @@ pub struct Sozu {
     pub listener: SocketAddr,
 }
 
-// -----------------------------------------------------------------------------
-// Configuration
-
 #[derive(Serialize, Deserialize, PartialEq, Eq, Clone, Debug)]
 pub struct GeneratorConfiguration {
     /// Socket address on which expose metrics server
@@ -49,6 +37,9 @@ pub struct GeneratorConfiguration {
     /// Sōzu configuration
     #[serde(rename = "sozu")]
     pub sozu: Sozu,
+    /// sleep between each request sent (milliseconds)
+    pub sleep_between_requests: u64,
+    pub clusters_to_send: i32,
 }
 
 impl TryFrom<PathBuf> for GeneratorConfiguration {
