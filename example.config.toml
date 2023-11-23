@@ -1,6 +1,11 @@
 # Socket address on which to expose the metrics server
 listening-address = "0.0.0.0:3000"
 
+# sleep between each request sent (milliseconds
+sleep_between_requests = 50
+
+clusters_to_send = 20
+
 [sozu]
 # Listener on which it will load certificates
 listener = "0.0.0.0:443"

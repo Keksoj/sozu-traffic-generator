@@ -14,9 +14,6 @@ use super::config::GeneratorConfiguration;
 pub mod generator;
 pub mod requests;
 
-// -----------------------------------------------------------------------------
-// Error
-
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("failed to create Generator, {0}")]
@@ -24,9 +21,6 @@ pub enum Error {
     #[error("failed to connect and consume topic, {0}")]
     Connect(GeneratorError),
 }
-
-// -----------------------------------------------------------------------------
-// helpers
 
 /// send a bunch of messages to Sōzu every 5 seconds
 #[tracing::instrument(skip_all)]
@@ -40,13 +34,11 @@ pub async fn generate(
 
     info!("Ready to generate messages");
 
-    for _ in 0..100 {
+    for _ in 0..config.clusters_to_send {
         generator
-            .send_a_bunch_of_requests_to_sozu()
+            .add_a_random_cluster_on_sozu()
             .await
             .map_err(Error::Connect)?;
-
-        std::thread::sleep(Duration::from_millis(50));
     }
     Ok(())
 }

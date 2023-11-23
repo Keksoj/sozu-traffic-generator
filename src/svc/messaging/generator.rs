@@ -90,8 +90,9 @@ impl Generator {
         Ok(Self { config, client })
     }
 
+    ///
     #[tracing::instrument(skip_all)]
-    pub async fn send_a_bunch_of_requests_to_sozu(&mut self) -> Result<(), GeneratorError> {
+    pub async fn add_a_random_cluster_on_sozu(&mut self) -> Result<(), GeneratorError> {
         debug!("Generating a bunch of requests for a random cluster");
         let requests = requests::generate_requests_for_a_random_cluster()?;
 
@@ -116,7 +117,10 @@ impl Generator {
                 .send(request_type)
                 .await
                 .map_err(GeneratorError::Send)?;
-            std::thread::sleep(std::time::Duration::from_millis(50));
+
+            std::thread::sleep(std::time::Duration::from_millis(
+                self.config.sleep_between_requests,
+            ));
         }
 
         Ok(())
