@@ -34,11 +34,12 @@ pub async fn generate(
 
     info!("Ready to generate messages");
 
-    for _ in 0..config.clusters_to_send {
+    for i in 0..config.clusters_to_send {
         generator
             .add_a_random_cluster_on_sozu()
             .await
             .map_err(Error::Connect)?;
+        info!("Sent {} cluster out of {}", i, config.clusters_to_send);
     }
     Ok(())
 }
