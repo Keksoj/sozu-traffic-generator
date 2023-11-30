@@ -37,25 +37,22 @@ pub fn generate_requests_for_a_random_cluster() -> Result<Vec<Request>, Generato
     .into();
     requests.push(add_frontend);
 
-    let add_backend_1 = RequestType::AddBackend(AddBackend {
-        cluster_id: random_cluster_id.clone(),
-        backend_id: format!("{}_backend_1", random_cluster_id),
-        address: random_socket_address(),
-        ..Default::default()
-    })
-    .into();
-    requests.push(add_backend_1);
-
-    let add_backend_2 = RequestType::AddBackend(AddBackend {
-        cluster_id: random_cluster_id.clone(),
-        backend_id: format!("{}_backend_2", random_cluster_id),
-        address: random_socket_address(),
-        ..Default::default()
-    })
-    .into();
-    requests.push(add_backend_2);
+    requests.push(random_backend(&random_cluster_id));
+    requests.push(random_backend(&random_cluster_id));
+    requests.push(random_backend(&random_cluster_id));
+    requests.push(random_backend(&random_cluster_id));
 
     Ok(requests)
+}
+
+fn random_backend(cluster_id: &str) -> Request {
+    RequestType::AddBackend(AddBackend {
+        cluster_id: cluster_id.to_owned(),
+        backend_id: format!("{}_backend_{}", cluster_id, random_id_of_7_chars()),
+        address: random_socket_address(),
+        ..Default::default()
+    })
+    .into()
 }
 
 fn random_id_of_7_chars() -> String {
